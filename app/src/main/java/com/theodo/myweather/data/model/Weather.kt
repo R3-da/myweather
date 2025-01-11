@@ -3,11 +3,11 @@ package com.theodo.myweather.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "weather")
 data class Weather(
-    val time: String,
+    @PrimaryKey val time: String,
     val temperature: Double,
     val windSpeed: Double,
-    val precipitationIntensity: Double,
-    @PrimaryKey val id: Int? = null
+    val precipitationIntensity: Double
 )
+

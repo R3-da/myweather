@@ -8,4 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface WeatherDao {
     @Query("SELECT * FROM weather")
     fun getWeatherData(): Flow<List<Weather>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWeather(weather: Weather)
 }

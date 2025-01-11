@@ -1,6 +1,7 @@
 package com.theodo.myweather
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -50,16 +52,41 @@ class MainActivity : ComponentActivity() {
                                 titleContentColor = MaterialTheme.colorScheme.primary,
                             ),
                             title = {
-                                Text("My Weather")
+                                Text("My Weather !")
                             }
                         )
                     }
                 ) { innerPadding ->
                     val weatherData = viewModel.weatherData.collectAsState()
-                    WeatherList(
-                        weatherData = weatherData.value,
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    ) {
+                        Button(
+                            onClick = {
+                                // Log the weather data
+                                if (weatherData.value.isNotEmpty()) {
+                                    weatherData.value.forEach { weather ->
+                                        Log.d(
+                                            "WeatherData",
+                                            "Time: ${weather.time}, Temp: ${weather.temperature}°F, " +
+                                                    "Wind Speed: ${weather.windSpeed} km/h, Precipitation: ${weather.precipitationIntensity} mm"
+                                        )
+                                    }
+                                } else {
+                                    Log.d("WeatherData", "No weather data available")
+                                }
+                            },
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(text = "Refresh")
+                        }
+                        WeatherList(
+                            weatherData = weatherData.value,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 }
             }
         }
