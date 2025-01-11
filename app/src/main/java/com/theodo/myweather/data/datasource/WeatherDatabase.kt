@@ -1,7 +1,8 @@
-package com.theodo.myweather.data
+package com.theodo.myweather.data.datasource
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.theodo.myweather.data.model.Weather
 
 @Database(
     entities = [Weather::class],
@@ -9,5 +10,5 @@ import androidx.room.RoomDatabase
 )
 
 abstract class WeatherDatabase: RoomDatabase() {
-    abstract val dao: WeatherDao
+    abstract fun weatherDao(): WeatherDao
 }
