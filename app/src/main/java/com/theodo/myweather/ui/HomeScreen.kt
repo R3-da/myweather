@@ -49,17 +49,22 @@ fun HomeScreen(
                 }
                 is StateResource.Success -> {
                     val response = state.data
-                    // Log the entire response or specific fields
                     Log.d(TAG, "Success state: $response")
-                    // For example, log the first timeline or intervals
-                    val timelines = response.data.timelines
+
+                    // Filter timelines with timestep = "1h"
+                    val timelines = response.data.timelines.filter { it.timestep == "1h" }
                     if (timelines.isNotEmpty()) {
-                        val timeline = timelines[0] // Access the first timeline
-                        Log.d(TAG, "First timeline: $timeline")
-                        val intervals = timeline.intervals
-                        if (intervals.isNotEmpty()) {
-                            Log.d(TAG, "First interval: ${intervals[0]}")
+                        timelines.forEach { timeline ->
+                            Log.d(TAG, "Filtered timeline with timestep '1h': $timeline")
+                            val intervals = timeline.intervals
+                            if (intervals.isNotEmpty()) {
+                                intervals.forEach { interval ->
+                                    Log.d(TAG, "Interval: $interval")
+                                }
+                            }
                         }
+                    } else {
+                        Log.d(TAG, "No timelines with timestep '1h' found.")
                     }
                 }
                 is StateResource.Error -> {
