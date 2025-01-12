@@ -42,7 +42,7 @@ fun Loader() {
         CircularProgressIndicator(
             modifier = Modifier
                 .size(60.dp)
-                .padding(10.dp),
+                .padding(8.dp),
             color = Purple40
         )
     }
@@ -107,20 +107,19 @@ fun WeatherRowComponent(page: Int, timeline: Timeline) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(8.dp)
-                .background(Color.White)
         ) {
             HeadingTextComponent(textValue = "Weather Forecast: ${timeline.startTime}")
 
-            Spacer(modifier = Modifier.size(10.dp))
+            Spacer(modifier = Modifier.size(8.dp))
 
             NormalTextComponent(textValue = "Temperature: ${weatherValues.temperature ?: "N/A"}°C")
-            Spacer(modifier = Modifier.size(10.dp))
+            Spacer(modifier = Modifier.size(8.dp))
 
             NormalTextComponent(textValue = "Wind Speed: ${weatherValues.windSpeed ?: "N/A"} km/h")
-            Spacer(modifier = Modifier.size(10.dp))
+            Spacer(modifier = Modifier.size(8.dp))
 
             DescTextComponent(textValue = "Precipitation: ${weatherValues.precipitationIntensity ?: "N/A"} mm")
-            Spacer(modifier = Modifier.size(10.dp))
+            Spacer(modifier = Modifier.size(8.dp))
 
             DescTextComponent(textValue = "Cloud Cover: ${weatherValues.cloudCover ?: "N/A"}%")
             Spacer(modifier = Modifier.weight(1f))

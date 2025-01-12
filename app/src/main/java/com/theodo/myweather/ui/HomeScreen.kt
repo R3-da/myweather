@@ -4,6 +4,7 @@ package com.theodo.myweather.ui
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -67,7 +68,7 @@ fun HomeScreen(
                     }
                 }
             }) {
-                Text(text = "Refresh")
+                Text(text = "Log")
             }
         }
 
@@ -87,11 +88,14 @@ fun HomeScreen(
                         Card(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(8.dp),
+                                .padding(24.dp),
                             elevation = CardDefaults.cardElevation(2.dp)
                         ) {
                             val interval = timeline.intervals.getOrNull(0) // For simplicity, use the first interval
-                            WeatherRowComponent(timelines.indexOf(timeline), timeline)
+                            // Add internal padding here
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                WeatherRowComponent(timelines.indexOf(timeline), timeline)
+                            }
                         }
                     }
                 }
