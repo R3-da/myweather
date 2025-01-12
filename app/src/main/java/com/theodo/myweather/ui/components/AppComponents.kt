@@ -2,6 +2,7 @@ package com.theodo.myweather.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -107,18 +108,22 @@ fun WeatherRowComponent(page: Int, interval: Interval) {
     ) {
         HeadingTextComponent(textValue = interval.startTime)
 
-        Spacer(modifier = Modifier.size(8.dp))
-
-        NormalTextComponent(textValue = "Temperature: ${weatherValues.temperature ?: "N/A"}°C")
-        Spacer(modifier = Modifier.size(8.dp))
-
-        NormalTextComponent(textValue = "Wind speed: ${weatherValues.windSpeed ?: "N/A"} km/h")
-        Spacer(modifier = Modifier.size(8.dp))
-
-        DescTextComponent(textValue = "Feels like: ${weatherValues.temperatureApparent ?: "N/A"} mm")
-        Spacer(modifier = Modifier.size(8.dp))
-
-        Spacer(modifier = Modifier.weight(1f))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(modifier = Modifier.weight(1f)) {
+                NormalTextComponent(textValue = "${weatherValues.temperature ?: "N/A"}°C")
+            }
+            Box(modifier = Modifier.weight(1f)) {
+                NormalTextComponent(textValue = "${weatherValues.windSpeed ?: "N/A"} km/h")
+            }
+            Box(modifier = Modifier.weight(1f)) {
+                DescTextComponent(textValue = "${weatherValues.temperatureApparent ?: "N/A"} °C")
+            }
+        }
     }
 }
 
