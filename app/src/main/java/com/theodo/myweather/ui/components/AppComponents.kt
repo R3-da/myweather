@@ -105,20 +105,19 @@ fun WeatherRowComponent(page: Int, interval: Interval) {
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        HeadingTextComponent(textValue = "Weather Forecast: ${interval.startTime}")
+        HeadingTextComponent(textValue = interval.startTime)
 
         Spacer(modifier = Modifier.size(8.dp))
 
         NormalTextComponent(textValue = "Temperature: ${weatherValues.temperature ?: "N/A"}°C")
         Spacer(modifier = Modifier.size(8.dp))
 
-        NormalTextComponent(textValue = "Wind Speed: ${weatherValues.windSpeed ?: "N/A"} km/h")
+        NormalTextComponent(textValue = "Wind speed: ${weatherValues.windSpeed ?: "N/A"} km/h")
         Spacer(modifier = Modifier.size(8.dp))
 
-        DescTextComponent(textValue = "Precipitation: ${weatherValues.precipitationIntensity ?: "N/A"} mm")
+        DescTextComponent(textValue = "Feels like: ${weatherValues.temperatureApparent ?: "N/A"} mm")
         Spacer(modifier = Modifier.size(8.dp))
 
-        DescTextComponent(textValue = "Cloud Cover: ${weatherValues.cloudCover ?: "N/A"}%")
         Spacer(modifier = Modifier.weight(1f))
     }
 }

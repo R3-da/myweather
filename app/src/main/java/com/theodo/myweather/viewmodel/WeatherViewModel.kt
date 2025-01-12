@@ -1,4 +1,4 @@
-package com.theodo.myweather.ui.viewmodel
+package com.theodo.myweather.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

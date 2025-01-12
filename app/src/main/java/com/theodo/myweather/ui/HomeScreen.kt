@@ -23,7 +23,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.theodo.myweather.ui.components.Loader
 import com.theodo.myweather.ui.components.WeatherRowComponent
-import com.theodo.myweather.ui.viewmodel.WeatherViewModel
+import com.theodo.myweather.viewmodel.WeatherViewModel
 import com.theodo.myweather.utils.StateResource
 
 const val TAG = "HomeScreen"
