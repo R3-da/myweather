@@ -1,18 +1,14 @@
-package com.theodo.myweather.ui.components
+package com.theodo.myweather.ui.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.theodo.myweather.data.entity.WeatherData
 import com.theodo.myweather.data.entity.Timeline
 import com.theodo.myweather.data.entity.Interval
 import com.theodo.myweather.data.entity.WeatherValues
@@ -50,7 +45,7 @@ fun Loader() {
 }
 
 @Composable
-fun NormalTextComponent(textValue: String) {
+fun NormalTextComposable(textValue: String) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,7 +62,7 @@ fun NormalTextComponent(textValue: String) {
 }
 
 @Composable
-fun DescTextComponent(textValue: String) {
+fun DescTextComposable(textValue: String) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -84,7 +79,7 @@ fun DescTextComponent(textValue: String) {
 }
 
 @Composable
-fun HeadingTextComponent(textValue: String) {
+fun HeadingTextComposable(textValue: String) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -99,14 +94,14 @@ fun HeadingTextComponent(textValue: String) {
 }
 
 @Composable
-fun WeatherRowComponent(page: Int, interval: Interval) {
+fun WeatherRowComposable(page: Int, interval: Interval) {
     val weatherValues = interval.values
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        HeadingTextComponent(textValue = interval.startTime)
+        HeadingTextComposable(textValue = interval.startTime)
 
         Row(
             modifier = Modifier
@@ -115,13 +110,13 @@ fun WeatherRowComponent(page: Int, interval: Interval) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Box(modifier = Modifier.weight(1f)) {
-                NormalTextComponent(textValue = "${weatherValues.temperature ?: "N/A"}°C")
+                NormalTextComposable(textValue = "${weatherValues.temperature ?: "N/A"}°C")
             }
             Box(modifier = Modifier.weight(1f)) {
-                NormalTextComponent(textValue = "${weatherValues.windSpeed ?: "N/A"} km/h")
+                NormalTextComposable(textValue = "${weatherValues.windSpeed ?: "N/A"} km/h")
             }
             Box(modifier = Modifier.weight(1f)) {
-                DescTextComponent(textValue = "${weatherValues.temperatureApparent ?: "N/A"} °C")
+                DescTextComposable(textValue = "${weatherValues.temperatureApparent ?: "N/A"} °C")
             }
         }
     }
@@ -129,7 +124,7 @@ fun WeatherRowComponent(page: Int, interval: Interval) {
 
 @Preview
 @Composable
-fun WeatherRowComponentPreview() {
+fun WeatherRowComposablePreview() {
     val weatherValues = WeatherValues(
         precipitationIntensity = 5.0,
         precipitationType = 1,
@@ -156,5 +151,5 @@ fun WeatherRowComponentPreview() {
         intervals = listOf(interval)
     )
 
-    WeatherRowComponent(page = 0, interval = interval)
+    WeatherRowComposable(page = 0, interval = interval)
 }

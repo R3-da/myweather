@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.theodo.myweather.ui.components.Loader
-import com.theodo.myweather.ui.components.WeatherRowComponent
+import com.theodo.myweather.ui.composables.Loader
+import com.theodo.myweather.ui.composables.WeatherRowComposable
 import com.theodo.myweather.viewmodel.WeatherViewModel
 import com.theodo.myweather.utils.StateResource
 
@@ -104,7 +104,7 @@ fun HomeScreen(
                                 ) {
                                     // Add internal padding here
                                     Column(modifier = Modifier.padding(16.dp)) {
-                                        WeatherRowComponent(timelines.indexOf(timeline), interval)
+                                        WeatherRowComposable(timelines.indexOf(timeline), interval)
                                     }
                                 }
                             }
