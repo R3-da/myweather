@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.theodo.myweather.ui.components.Loader
 import com.theodo.myweather.ui.components.WeatherRowComponent
 import com.theodo.myweather.ui.viewmodel.WeatherViewModel
@@ -31,84 +33,93 @@ fun HomeScreen(
     WeatherViewModel: WeatherViewModel = hiltViewModel()
 ) {
     val weatherResp = WeatherViewModel.weather.collectAsState()
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = weatherResp.value is StateResource.Loading)
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
+    SwipeRefresh(
+        state = swipeRefreshState,
+        onRefresh = {
+            // Trigger the refresh logic
+            WeatherViewModel.refreshWeatherData()
+        }
     ) {
-        item {
-            // Button to refresh data
-            Button(onClick = {
-                when (val state = weatherResp.value) {
-                    is StateResource.Loading -> {
-                        Log.d(TAG, "Loading state: ${state}")
-                    }
-                    is StateResource.Success -> {
-                        val response = state.data
-                        Log.d(TAG, "Success state: $response")
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            item {
+                // Button to refresh data manually (optional, since pull-to-refresh is implemented)
+                Button(onClick = {
+                    when (val state = weatherResp.value) {
+                        is StateResource.Loading -> {
+                            Log.d(TAG, "Loading state: ${state}")
+                        }
+                        is StateResource.Success -> {
+                            val response = state.data
+                            Log.d(TAG, "Success state: $response")
 
-                        // Filter timelines with timestep = "1h"
-                        val timelines = response.data.timelines.filter { it.timestep == "1h" }
-                        if (timelines.isNotEmpty()) {
-                            timelines.forEach { timeline ->
-                                Log.d(TAG, "Filtered timeline with timestep '1h': $timeline")
-                                val intervals = timeline.intervals
-                                if (intervals.isNotEmpty()) {
-                                    intervals.forEach { interval ->
-                                        Log.d(TAG, "Interval: $interval")
+                            // Filter timelines with timestep = "1h"
+                            val timelines = response.data.timelines.filter { it.timestep == "1h" }
+                            if (timelines.isNotEmpty()) {
+                                timelines.forEach { timeline ->
+                                    Log.d(TAG, "Filtered timeline with timestep '1h': $timeline")
+                                    val intervals = timeline.intervals
+                                    if (intervals.isNotEmpty()) {
+                                        intervals.forEach { interval ->
+                                            Log.d(TAG, "Interval: $interval")
+                                        }
+                                    }
+                                }
+                            } else {
+                                Log.d(TAG, "No timelines with timestep '1h' found.")
+                            }
+                        }
+                        is StateResource.Error -> {
+                            val error = state.error
+                            Log.d(TAG, "Error state: $error")
+                        }
+                    }
+                }) {
+                    Text(text = "Log")
+                }
+            }
+
+            when (weatherResp.value) {
+                is StateResource.Loading -> {
+                    item {
+                        Loader()
+                    }
+                }
+                is StateResource.Success -> {
+                    val response = (weatherResp.value as StateResource.Success).data
+                    val timelines = response.data.timelines.filter { it.timestep == "1h" } // Filter by 1h timestep
+
+                    if (timelines.isNotEmpty()) {
+                        // Iterate over each timeline and display each interval in a separate card
+                        items(timelines) { timeline ->
+                            timeline.intervals.forEach { interval ->
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp),
+                                    elevation = CardDefaults.cardElevation(2.dp)
+                                ) {
+                                    // Add internal padding here
+                                    Column(modifier = Modifier.padding(16.dp)) {
+                                        WeatherRowComponent(timelines.indexOf(timeline), interval)
                                     }
                                 }
                             }
-                        } else {
-                            Log.d(TAG, "No timelines with timestep '1h' found.")
+                        }
+                    } else {
+                        item {
+                            Text(text = "No data available for 1h timestep.")
                         }
                     }
-                    is StateResource.Error -> {
-                        val error = state.error
-                        Log.d(TAG, "Error state: $error")
-                    }
                 }
-            }) {
-                Text(text = "Log")
-            }
-        }
-
-        when (weatherResp.value) {
-            is StateResource.Loading -> {
-                item {
-                    Loader()
-                }
-            }
-            is StateResource.Success -> {
-                val response = (weatherResp.value as StateResource.Success).data
-                val timelines = response.data.timelines.filter { it.timestep == "1h" } // Filter by 1h timestep
-
-                if (timelines.isNotEmpty()) {
-                    // Iterate over each timeline and display each interval in a separate card
-                    items(timelines) { timeline ->
-                        timeline.intervals.forEach { interval ->
-                            Card(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(24.dp),
-                                elevation = CardDefaults.cardElevation(2.dp)
-                            ) {
-                                // Add internal padding here
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    WeatherRowComponent(timelines.indexOf(timeline), interval)
-                                }
-                            }
-                        }
-                    }
-                } else {
+                is StateResource.Error -> {
                     item {
-                        Text(text = "No data available for 1h timestep.")
+                        val error = (weatherResp.value as StateResource.Error)
+                        Log.d(TAG, "Inside Error $error")
                     }
-                }
-            }
-            is StateResource.Error -> {
-                item {
-                    val error = (weatherResp.value as StateResource.Error)
-                    Log.d(TAG, "Inside Error $error")
                 }
             }
         }

@@ -27,6 +27,11 @@ class WeatherViewModel @Inject constructor(
     init {
         getWeather()
     }
+
+    fun refreshWeatherData() {
+        getWeather()
+    }
+
     fun getWeather(){
         // Background thread for the api call
         viewModelScope.launch (Dispatchers.IO){
