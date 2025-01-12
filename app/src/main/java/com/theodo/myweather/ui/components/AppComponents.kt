@@ -49,15 +49,6 @@ fun Loader() {
 }
 
 @Composable
-fun WeatherList(response: WeatherData) {
-    LazyColumn {
-        items(response.timelines) { timeline ->
-            WeatherRowComponent(page = 0, timeline = timeline) // Pass both page and timeline
-        }
-    }
-}
-
-@Composable
 fun NormalTextComponent(textValue: String) {
     Text(
         modifier = Modifier
@@ -104,22 +95,6 @@ fun HeadingTextComponent(textValue: String) {
             fontWeight = FontWeight.Medium
         )
     )
-}
-
-@Composable
-fun AuthorDetailSComponent(authorName: String?, sourceName: String?) {
-    Row(
-        modifier = Modifier.fillMaxWidth()
-            .padding(start = 10.dp, end = 10.dp)
-    ) {
-        authorName?.also {
-            NormalTextComponent(textValue = it)
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        sourceName?.also {
-            NormalTextComponent(textValue = it)
-        }
-    }
 }
 
 @Composable
