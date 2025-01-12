@@ -80,23 +80,28 @@ fun HomeScreen(
             }
             is StateResource.Success -> {
                 val response = (weatherResp.value as StateResource.Success).data
-                val timelines = response.data.timelines
+                val timelines = response.data.timelines.filter { it.timestep == "1h" } // Filter by 1h timestep
 
                 if (timelines.isNotEmpty()) {
-                    // Display weather data for each timeline
+                    // Iterate over each timeline and display each interval in a separate card
                     items(timelines) { timeline ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(24.dp),
-                            elevation = CardDefaults.cardElevation(2.dp)
-                        ) {
-                            val interval = timeline.intervals.getOrNull(0) // For simplicity, use the first interval
-                            // Add internal padding here
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                WeatherRowComponent(timelines.indexOf(timeline), timeline)
+                        timeline.intervals.forEach { interval ->
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(24.dp),
+                                elevation = CardDefaults.cardElevation(2.dp)
+                            ) {
+                                // Add internal padding here
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    WeatherRowComponent(timelines.indexOf(timeline), interval)
+                                }
                             }
                         }
+                    }
+                } else {
+                    item {
+                        Text(text = "No data available for 1h timestep.")
                     }
                 }
             }

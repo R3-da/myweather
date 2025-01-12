@@ -98,32 +98,28 @@ fun HeadingTextComponent(textValue: String) {
 }
 
 @Composable
-fun WeatherRowComponent(page: Int, timeline: Timeline) {
-    val interval = timeline.intervals.getOrNull(0) // For simplicity, using the first interval
+fun WeatherRowComponent(page: Int, interval: Interval) {
+    val weatherValues = interval.values
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+    ) {
+        HeadingTextComponent(textValue = "Weather Forecast: ${interval.startTime}")
 
-    interval?.let { intervalData ->
-        val weatherValues = intervalData.values
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
-        ) {
-            HeadingTextComponent(textValue = "Weather Forecast: ${timeline.startTime}")
+        Spacer(modifier = Modifier.size(8.dp))
 
-            Spacer(modifier = Modifier.size(8.dp))
+        NormalTextComponent(textValue = "Temperature: ${weatherValues.temperature ?: "N/A"}°C")
+        Spacer(modifier = Modifier.size(8.dp))
 
-            NormalTextComponent(textValue = "Temperature: ${weatherValues.temperature ?: "N/A"}°C")
-            Spacer(modifier = Modifier.size(8.dp))
+        NormalTextComponent(textValue = "Wind Speed: ${weatherValues.windSpeed ?: "N/A"} km/h")
+        Spacer(modifier = Modifier.size(8.dp))
 
-            NormalTextComponent(textValue = "Wind Speed: ${weatherValues.windSpeed ?: "N/A"} km/h")
-            Spacer(modifier = Modifier.size(8.dp))
+        DescTextComponent(textValue = "Precipitation: ${weatherValues.precipitationIntensity ?: "N/A"} mm")
+        Spacer(modifier = Modifier.size(8.dp))
 
-            DescTextComponent(textValue = "Precipitation: ${weatherValues.precipitationIntensity ?: "N/A"} mm")
-            Spacer(modifier = Modifier.size(8.dp))
-
-            DescTextComponent(textValue = "Cloud Cover: ${weatherValues.cloudCover ?: "N/A"}%")
-            Spacer(modifier = Modifier.weight(1f))
-        }
+        DescTextComponent(textValue = "Cloud Cover: ${weatherValues.cloudCover ?: "N/A"}%")
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
@@ -156,5 +152,5 @@ fun WeatherRowComponentPreview() {
         intervals = listOf(interval)
     )
 
-    WeatherRowComponent(page = 0, timeline = timeline)
+    WeatherRowComponent(page = 0, interval = interval)
 }
