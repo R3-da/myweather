@@ -1,8 +1,10 @@
 package com.theodo.myweather.ui.composables
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -93,21 +95,33 @@ fun Loader() {
     }
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun NormalTextComposable(textValue: String) {
-    Text(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(8.dp),
-        text = textValue,
-        style = TextStyle(
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily.Monospace,
-            color = Purple40
+            .padding(8.dp)
+    ) {
+        // Access maxWidth inside the BoxWithConstraints scope
+        val textSize = when {
+            maxWidth < 300.dp -> 12.sp // Small screen
+            maxWidth < 600.dp -> 14.sp // Medium screen
+            else -> 16.sp // Large screen
+        }
+
+        Text(
+            text = textValue,
+            style = TextStyle(
+                fontSize = textSize,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Monospace,
+                color = Purple40
+            ),
+            modifier = Modifier.fillMaxWidth()
         )
-    )
+    }
 }
 
 @Composable
@@ -119,7 +133,7 @@ fun DescTextComposable(textValue: String) {
             .padding(8.dp),
         text = textValue,
         style = TextStyle(
-            fontSize = 18.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             fontFamily = FontFamily.Monospace,
             color = Color.Blue
@@ -148,12 +162,11 @@ fun WeatherRowComposable(interval: Interval) {
 
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Box(modifier = Modifier.weight(1f)) {
-            HeadingTextComposable(textValue = interval.startTime.substring(
+            NormalTextComposable(textValue = interval.startTime.substring(
                 interval.startTime.indexOf('T') + 1,  // Start after 'T'
                 interval.startTime.indexOf(':', interval.startTime.indexOf(':') + 1)  // Find the second ':'
                 )
@@ -163,10 +176,10 @@ fun WeatherRowComposable(interval: Interval) {
             NormalTextComposable(textValue = "${weatherValues.temperature ?: "N/A"}°C")
         }
         Box(modifier = Modifier.weight(1f)) {
-            NormalTextComposable(textValue = "${weatherValues.windSpeed ?: "N/A"} km/h")
+            NormalTextComposable(textValue = "${weatherValues.windSpeed ?: "N/A"}km/h")
         }
         Box(modifier = Modifier.weight(1f)) {
-            DescTextComposable(textValue = "${weatherValues.temperatureApparent ?: "N/A"} °C")
+            NormalTextComposable(textValue = "${weatherValues.temperatureApparent ?: "N/A"}°C")
         }
     }
 

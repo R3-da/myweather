@@ -47,7 +47,7 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(8.dp)
         ) {
             when (weatherResp.value) {
                 is StateResource.Loading -> {
@@ -72,11 +72,11 @@ fun HomeScreen(
                                 Card(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
+                                        .padding(top = 8.dp, bottom = 8.dp),
                                     elevation = CardDefaults.cardElevation(2.dp)
                                 ) {
                                     // Add internal padding here
-                                    Column(modifier = Modifier.padding(16.dp)) {
+                                    Column(modifier = Modifier.padding(8.dp)) {
                                         WeatherRowComposable(interval = interval)
                                     }
                                 }
