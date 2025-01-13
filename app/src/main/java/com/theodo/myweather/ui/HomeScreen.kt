@@ -33,6 +33,7 @@ fun HomeScreen(
     WeatherViewModel: WeatherViewModel = hiltViewModel()
 ) {
     val weatherResp = WeatherViewModel.weather.collectAsState()
+    val groupedWeatherData = WeatherViewModel.groupedWeatherData.collectAsState()
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = weatherResp.value is StateResource.Loading)
 
     SwipeRefresh(
@@ -53,12 +54,21 @@ fun HomeScreen(
                 }
                 is StateResource.Success -> {
                     val response = (weatherResp.value as StateResource.Success).data
-                    val timelines = response.data.timelines.filter { it.timestep == "1h" } // Filter by 1h timestep
+                    val groupedData = groupedWeatherData.value
 
-                    if (timelines.isNotEmpty()) {
-                        // Iterate over each timeline and display each interval in a separate card
-                        items(timelines) { timeline ->
-                            timeline.intervals.forEach { interval ->
+                    if (groupedData.isNotEmpty()) {
+                        // Iterate over each date and display the intervals grouped by date
+                        groupedData.forEach { (date, intervals) ->
+                            item {
+                                Text(
+                                    text = date,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
+                                )
+                            }
+
+                            items(intervals) { interval ->
                                 Card(
                                     modifier = Modifier
                                         .fillMaxSize()
@@ -67,14 +77,14 @@ fun HomeScreen(
                                 ) {
                                     // Add internal padding here
                                     Column(modifier = Modifier.padding(16.dp)) {
-                                        WeatherRowComposable(timelines.indexOf(timeline), interval)
+                                        WeatherRowComposable(interval = interval)
                                     }
                                 }
                             }
                         }
                     } else {
                         item {
-                            Text(text = "No data available for 1h timestep.")
+                            Text(text = "No grouped weather data available.")
                         }
                     }
                 }

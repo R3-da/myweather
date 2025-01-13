@@ -143,7 +143,7 @@ fun HeadingTextComposable(textValue: String) {
 }
 
 @Composable
-fun WeatherRowComposable(page: Int, interval: Interval) {
+fun WeatherRowComposable(interval: Interval) {
     val weatherValues = interval.values
     Column(
         modifier = Modifier
@@ -193,12 +193,6 @@ fun WeatherRowComposablePreview() {
         values = weatherValues
     )
 
-    val timeline = Timeline(
-        timestep = "1h",
-        startTime = "2025-01-11T12:00:00Z",
-        endTime = "2025-01-11T13:00:00Z",
-        intervals = listOf(interval)
-    )
-
-    WeatherRowComposable(page = 0, interval = interval)
+    // Pass only the interval, as the page parameter is no longer required
+    WeatherRowComposable(interval = interval)
 }
