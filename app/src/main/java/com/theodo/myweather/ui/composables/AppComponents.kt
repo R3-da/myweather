@@ -145,34 +145,31 @@ fun HeadingTextComposable(textValue: String) {
 @Composable
 fun WeatherRowComposable(interval: Interval) {
     val weatherValues = interval.values
-    Column(
+
+    Row(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        HeadingTextComposable(
-            textValue = interval.startTime.substring(
+        Box(modifier = Modifier.weight(1f)) {
+            HeadingTextComposable(textValue = interval.startTime.substring(
                 interval.startTime.indexOf('T') + 1,  // Start after 'T'
                 interval.startTime.indexOf(':', interval.startTime.indexOf(':') + 1)  // Find the second ':'
+                )
             )
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Box(modifier = Modifier.weight(1f)) {
-                NormalTextComposable(textValue = "${weatherValues.temperature ?: "N/A"}°C")
-            }
-            Box(modifier = Modifier.weight(1f)) {
-                NormalTextComposable(textValue = "${weatherValues.windSpeed ?: "N/A"} km/h")
-            }
-            Box(modifier = Modifier.weight(1f)) {
-                DescTextComposable(textValue = "${weatherValues.temperatureApparent ?: "N/A"} °C")
-            }
+        }
+        Box(modifier = Modifier.weight(1f)) {
+            NormalTextComposable(textValue = "${weatherValues.temperature ?: "N/A"}°C")
+        }
+        Box(modifier = Modifier.weight(1f)) {
+            NormalTextComposable(textValue = "${weatherValues.windSpeed ?: "N/A"} km/h")
+        }
+        Box(modifier = Modifier.weight(1f)) {
+            DescTextComposable(textValue = "${weatherValues.temperatureApparent ?: "N/A"} °C")
         }
     }
+
 }
 
 @Preview

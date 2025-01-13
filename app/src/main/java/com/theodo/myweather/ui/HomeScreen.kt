@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.theodo.myweather.ui.composables.HeadingTextComposable
 import com.theodo.myweather.ui.composables.Loader
 import com.theodo.myweather.ui.composables.WeatherRowComposable
 import com.theodo.myweather.viewmodel.WeatherViewModel
@@ -44,7 +45,9 @@ fun HomeScreen(
         }
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
         ) {
             when (weatherResp.value) {
                 is StateResource.Loading -> {
@@ -60,11 +63,8 @@ fun HomeScreen(
                         // Iterate over each date and display the intervals grouped by date
                         groupedData.forEach { (date, intervals) ->
                             item {
-                                Text(
-                                    text = date,
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 8.dp)
+                                HeadingTextComposable(
+                                    textValue = date
                                 )
                             }
 
@@ -72,7 +72,7 @@ fun HomeScreen(
                                 Card(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .padding(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp),
+                                        .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
                                     elevation = CardDefaults.cardElevation(2.dp)
                                 ) {
                                     // Add internal padding here
