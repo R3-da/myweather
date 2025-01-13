@@ -150,8 +150,12 @@ fun WeatherRowComposable(interval: Interval) {
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        HeadingTextComposable(textValue = interval.startTime)
-
+        HeadingTextComposable(
+            textValue = interval.startTime.substring(
+                interval.startTime.indexOf('T') + 1,  // Start after 'T'
+                interval.startTime.indexOf(':', interval.startTime.indexOf(':') + 1)  // Find the second ':'
+            )
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
