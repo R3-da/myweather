@@ -95,4 +95,7 @@ dependencies {
 
     // Swiperefresh
     implementation ("com.google.accompanist:accompanist-swiperefresh:0.24.13-rc")
+
+    implementation ("androidx.compose.material:material-icons-extended:1.5.3")
+
 }

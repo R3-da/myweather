@@ -45,43 +45,6 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            item {
-                // Button to refresh data manually (optional, since pull-to-refresh is implemented)
-                Button(onClick = {
-                    when (val state = weatherResp.value) {
-                        is StateResource.Loading -> {
-                            Log.d(TAG, "Loading state: ${state}")
-                        }
-                        is StateResource.Success -> {
-                            val response = state.data
-                            Log.d(TAG, "Success state: $response")
-
-                            // Filter timelines with timestep = "1h"
-                            val timelines = response.data.timelines.filter { it.timestep == "1h" }
-                            if (timelines.isNotEmpty()) {
-                                timelines.forEach { timeline ->
-                                    Log.d(TAG, "Filtered timeline with timestep '1h': $timeline")
-                                    val intervals = timeline.intervals
-                                    if (intervals.isNotEmpty()) {
-                                        intervals.forEach { interval ->
-                                            Log.d(TAG, "Interval: $interval")
-                                        }
-                                    }
-                                }
-                            } else {
-                                Log.d(TAG, "No timelines with timestep '1h' found.")
-                            }
-                        }
-                        is StateResource.Error -> {
-                            val error = state.error
-                            Log.d(TAG, "Error state: $error")
-                        }
-                    }
-                }) {
-                    Text(text = "Log")
-                }
-            }
-
             when (weatherResp.value) {
                 is StateResource.Loading -> {
                     item {
