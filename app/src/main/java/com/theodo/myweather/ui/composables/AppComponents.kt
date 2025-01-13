@@ -1,14 +1,18 @@
 package com.theodo.myweather.ui.composables
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,14 +37,59 @@ fun Loader() {
             .fillMaxSize()
             .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top // Align cards at the top
     ) {
-        CircularProgressIndicator(
-            modifier = Modifier
-                .size(60.dp)
-                .padding(8.dp),
-            color = Purple40
-        )
+        repeat(5) { // Display 5 placeholder cards
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp, horizontal = 24.dp), // Match padding of real cards
+                elevation = CardDefaults.cardElevation(2.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp) // Match internal padding of real cards
+                ) {
+                    // Placeholder for the start time
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(20.dp)
+                            .background(Color.Gray.copy(alpha = 0.2f))
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Placeholder for temperature
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(20.dp)
+                                .background(Color.Gray.copy(alpha = 0.2f))
+                        )
+                        // Placeholder for wind speed
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(20.dp)
+                                .padding(start = 8.dp)
+                                .background(Color.Gray.copy(alpha = 0.2f))
+                        )
+                        // Placeholder for apparent temperature
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(20.dp)
+                                .padding(start = 8.dp)
+                                .background(Color.Gray.copy(alpha = 0.2f))
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
