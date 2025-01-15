@@ -61,7 +61,7 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    private fun groupDataByDate(intervals: List<Interval>): Map<String, List<Interval>> {
+    fun groupDataByDate(intervals: List<Interval>): Map<String, List<Interval>> {
         return intervals.groupBy { interval ->
             val startTime = interval.startTime
             val date = startTime.substring(0, 10) // Extract the date part (e.g., "2021-03-24")
